@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DB_URL = credentials('DB_URL'),
+        DB_URL = credentials('DB_URL')
         GCP_SERVICE_ACCOUNT_KEY = credentials('gcp-service-account-key')
         GCR_PROJECT_ID = credentials('gcp-project-id')
         GCR_REGISTRY = 'gcr.io'
