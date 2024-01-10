@@ -22,9 +22,8 @@ pipeline {
             steps {
                 script {
                     withEnv([
-                        "DB_URL=${DB_URL}",
-                        "DB_USERNAME=${DB_USERNAME}",
-                        "DB_PASSWORD=${DB_PASSWORD}"
+                        "DB_URL=${DB_URL}"
+                    
                     ]){
                         def workspacePath = env.WORKSPACE
                         dir(workspacePath) {
