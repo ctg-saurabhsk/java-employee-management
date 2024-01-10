@@ -58,13 +58,13 @@ pipeline {
             }
         }
 
-        stage('Build and SonarQube Scan') {
-            steps {
-                script {
-                    sh "${MAVEN_HOME}/bin/mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}"
-                }
-            }
-        }
+        // stage('Build and SonarQube Scan') {
+        //     steps {
+        //         script {
+        //             sh "${MAVEN_HOME}/bin/mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}"
+        //         }
+        //     }
+        // }
 
         stage('Build project and package jar') {
             steps {
@@ -92,52 +92,14 @@ pipeline {
             }
         }
         
-        stage('AWS Configuration') {
-            steps {
-                // Optional: Explicitly run aws configure with environment variables
-                sh "aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}"
-                sh "aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}"
-                sh "aws configure set default.region ${AWS_REGION}"
-            }
-        }
+     
 
-        stage('Build Image') {
-            steps {
-                script {
-                    // Retrieve the commit SHA from the Jenkins environment
-                    def commitSha = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
-        
-                    // Build the image with the commit SHA as the tag
-                    sh "docker build -t humanresource:${commitSha} ."  // Replace with your Dockerfile location
-                }
-            }
-        }
+}
 
-        stage('ECR Login') {
-            steps {
-                script {
-                    // Use the retrieved URL for ECR login
-                    sh "aws ecr get-login-password | docker login --username AWS --password-stdin ${ecrRegistryUrl}"
-                }
-            }
-        }
-
-        stage('Push Image to ECR') {
-            steps {
-                script {
-                    // Retrieve the commit SHA from the Jenkins environment
-                    def commitSha = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
-        
-                    // Tag the image with the ECR repository name
-                    sh "docker tag humanresource:${commitSha} ${ecrRegistryUrl}:${commitSha}"  // Replace with your ECR repository name
-        
-                    // Push the image to ECR
-                    sh "docker push ${ecrRegistryUrl}:${commitSha}"
-                }
-            }
-        }
+    
+ 
     }
     
 
-}
+
 
