@@ -2,7 +2,11 @@ pipeline {
     agent any
 
     environment {
-        DB_URL = credentials('DB_URL')
+        DB_URL = credentials('DB_URL'),
+        GCP_SERVICE_ACCOUNT_KEY = credentials('gcp-service-account-key')
+        GCR_PROJECT_ID = credentials('gcp-project-id')
+        GCR_REGISTRY = 'gcr.io'
+        GCR_REPO_NAME = credentials('gcr-repo-name')
 
     }
         
@@ -91,6 +95,51 @@ pipeline {
                 }
             }
         }
+
+           stages {
+        stage('GCP Configuration') {
+            steps {
+                script {
+                    // Authenticate with GCP using the service account key
+                    sh "echo '$GCP_SERVICE_ACCOUNT_KEY' > gcp-key.json"
+                    sh "gcloud auth activate-service-account --key-file=gcp-key.json"
+                    sh "gcloud config set project $GCR_PROJECT_ID"
+                }
+            }
+        }
+
+        stage('Build Image') {
+            steps {
+                script {
+                    // Retrieve the commit SHA from the Jenkins environment
+                    def commitSha = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
+
+                    // Build the image with the commit SHA as the tag
+                    sh "docker build -t $GCR_REGISTRY/$GCR_PROJECT_ID/$GCR_REPO_NAME:${commitSha} ."  // Replace with your Dockerfile location
+                }
+            }
+        }
+
+        stage('GCR Login') {
+            steps {
+                script {
+                    // Authenticate Docker with GCR
+                    sh "gcloud auth configure-docker --quiet"
+                }
+            }
+        }
+
+        stage('Push Image to GCR') {
+            steps {
+                script {
+                    // Retrieve the commit SHA from the Jenkins environment
+                    def commitSha = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
+
+                    // Push the image to GCR
+                    sh "docker push $GCR_REGISTRY/$GCR_PROJECT_ID/$GCR_REPO_NAME:${commitSha}"
+                }
+            }
+        }
         
      
 
@@ -99,7 +148,11 @@ pipeline {
     
  
     }
-    
+
+ 
+
+
+      
 
 
 
