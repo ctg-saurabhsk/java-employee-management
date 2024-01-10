@@ -96,7 +96,7 @@ pipeline {
             }
         }
 
-           stages {
+           
         stage('GCP Configuration') {
             steps {
                 script {
@@ -148,7 +148,7 @@ pipeline {
     
  
     }
-}
+
 
  
 
