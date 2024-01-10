@@ -3,17 +3,7 @@ pipeline {
 
     environment {
         DB_URL = credentials('DB_URL')
-        DB_USERNAME = credentials('DB_USERNAME')
-        DB_PASSWORD = credentials('DB_PASSWORD')
-        SONAR_PROJECT_KEY = credentials('SONAR_PROJECTKEY')
-        SONAR_HOST_URL = credentials('SONAR_HOST_URL')
-        SONAR_TOKEN = credentials('SONARQUBE_LOGIN')
-        //Sonar_Server = 'Sonar_Server'
-        AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
-        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        AWS_REGION            = 'us-east-1'
-        // AWS_IAM_ARN           = credentials('AWS_IAM_ARN')
-        ecrRegistryUrl = credentials('ECR_REGISTRY_URL')
+
     }
         
     tools {
