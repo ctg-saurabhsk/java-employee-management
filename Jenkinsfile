@@ -3,11 +3,7 @@ pipeline {
 
     environment {
         DB_URL = credentials('DB_URL')
-        GCP_SERVICE_ACCOUNT_KEY = credentials('gcp-service-account-key')
-        GCR_PROJECT_ID = 'sylvan-fusion-410508'
-        GCR_REGISTRY = 'gcr.io'
-        GCR_REPO_NAME = credentials('gcr-repo-name')
-
+    
     }
         
     tools {
