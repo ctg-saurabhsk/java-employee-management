@@ -5,7 +5,7 @@ pipeline {
         DB_URL = credentials('DB_URL')
         GCR_REGISTRY = "gcr.io"  // Update with your GCR registry URL
         GCR_PROJECT_ID = "sylvan-fusion-410508"  // Update with your GCP project ID
-        GCR_SERVICE_ACCOUNT_KEY = credentials('service-account-key-id')  // Update with your GCR service account key credential ID
+        GCR_SERVICE_ACCOUNT_KEY = credentials('your-gcr-service-account-key-id')  // Update with your GCR service account key credential ID
         GCR_REPO_NAME = "emp-management-backend"  // Update with your GCR repository name
     
     }
@@ -98,13 +98,16 @@ pipeline {
 
 
     
-        stage('GCR Configuration') {
+         stage('GCR Configuration') {
             steps {
                 script {
-                    // Authenticate with GCR using the service account key
+                    // Write service account key to a temporary file
                     withCredentials([file(credentialsId: 'your-gcr-service-account-key-id', variable: 'GCR_SERVICE_ACCOUNT_KEY_FILE')]) {
-                        sh "gcloud auth activate-service-account --key-file=${GCR_SERVICE_ACCOUNT_KEY_FILE}"
+                        sh "cp ${GCR_SERVICE_ACCOUNT_KEY_FILE} gcr-key.json"
                     }
+
+                    // Authenticate with GCR using the service account key file
+                    sh "gcloud auth activate-service-account --key-file=gcr-key.json"
                     sh "gcloud config set project ${GCR_PROJECT_ID}"
                 }
             }
