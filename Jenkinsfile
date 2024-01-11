@@ -5,7 +5,7 @@ pipeline {
         DB_URL = credentials('DB_URL')
         GCR_REGISTRY = "gcr.io"  // Update with your GCR registry URL
         GCR_PROJECT_ID = "sylvan-fusion-410508"  // Update with your GCP project ID
-        GCR_SERVICE_ACCOUNT_KEY = credentials('your-gcr-service-account-key-id')  // Update with your GCR service account key credential ID
+        GCR_SERVICE_ACCOUNT_KEY = 'your-gcr-service-account-key-id' // Update with your GCR service account key credential ID
         GCR_REPO_NAME = "emp-management-backend"  // Update with your GCR repository name
     
     }
