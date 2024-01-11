@@ -14,6 +14,7 @@ pipeline {
         
     tools {
         maven "MAVEN_HOME"
+        docker "docker"
     }
 
     stages {
