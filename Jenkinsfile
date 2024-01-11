@@ -7,6 +7,8 @@ pipeline {
         GCR_PROJECT_ID = "sylvan-fusion-410508"  // Update with your GCP project ID
         GCR_SERVICE_ACCOUNT_KEY = 'your-gcr-service-account-key-id' // Update with your GCR service account key credential ID
         GCR_REPO_NAME = "emp-management-backend"  // Update with your GCR repository name
+        GCR_CREDENTIALS_ID = 'your-gcr-service-account-key-id'
+        GCR_IMAGE_NAME = 'gcr.io/sylvan-fusion-410508/emp-management-backend'
     
     }
         
@@ -96,57 +98,31 @@ pipeline {
             }
         }
 
-
-    
-         stage('GCR Configuration') {
+        stage('Build Docker Image') {
             steps {
                 script {
-                    // Write service account key to a temporary file
-                    withCredentials([file(credentialsId: 'your-gcr-service-account-key-id', variable: 'GCR_SERVICE_ACCOUNT_KEY_FILE')]) {
-                        sh "cp ${GCR_SERVICE_ACCOUNT_KEY_FILE} gcr-key.json"
+                    docker.build("${GCR_IMAGE_NAME}:${BUILD_NUMBER}")
+                }
+            }
+        }
+
+        stage('Push to GCR') {
+            steps {
+                script {
+                    docker.withRegistry('https://gcr.io', GCR_CREDENTIALS_ID) {
+                        docker.image("${GCR_IMAGE_NAME}:${BUILD_NUMBER}").push()
                     }
-
-                    // Authenticate with GCR using the service account key file
-                    sh "gcloud auth activate-service-account --key-file=gcr-key.json"
-                    sh "gcloud config set project ${GCR_PROJECT_ID}"
-                }
-            }
-        }
-
-        stage('Build Image') {
-            steps {
-                script {
-                    // Retrieve the commit SHA from the Jenkins environment
-                    def commitSha = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
-
-                    // Build the image with the commit SHA as the tag
-                    sh "docker build -t ${GCR_REGISTRY}/${GCR_PROJECT_ID}/${GCR_REPO_NAME}:${commitSha} ."
-                }
-            }
-        }
-
-        stage('GCR Login') {
-            steps {
-                script {
-                    // Authenticate Docker with GCR
-                    sh "gcloud auth configure-docker --quiet"
-                }
-            }
-        }
-
-        stage('Push Image to GCR') {
-            steps {
-                script {
-                    // Retrieve the commit SHA from the Jenkins environment
-                    def commitSha = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
-
-                    // Push the image to GCR
-                    sh "docker push ${GCR_REGISTRY}/${GCR_PROJECT_ID}/${GCR_REPO_NAME}:${commitSha}"
                 }
             }
         }
     }
 }
+
+
+    
+     
+    
+
 
            
   
