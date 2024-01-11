@@ -102,8 +102,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker build -t myapp .
-                    //docker.build("${GCR_IMAGE_NAME}:${BUILD_NUMBER}")
+                   
+                    docker.build("${GCR_IMAGE_NAME}:${BUILD_NUMBER}")
                 }
             }
         }
