@@ -65,13 +65,13 @@ pipeline {
             }
         }
 
-        // stage('Build and SonarQube Scan') {
-        //     steps {
-        //         script {
-        //             sh "${MAVEN_HOME}/bin/mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}"
-        //         }
-        //     }
-        // }
+        stage('Build and SonarQube Scan') {
+            steps {
+                script {
+                    sh "${MAVEN_HOME}/bin/mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}"
+                }
+           }
+         }
 
         stage('Build project and package jar') {
             steps {
