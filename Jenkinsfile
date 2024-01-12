@@ -3,12 +3,12 @@ pipeline {
 
     environment {
         DB_URL = credentials('DB_URL')
-        GCR_REGISTRY = "gcr.io"  // Update with your GCR registry URL
-        GCR_PROJECT_ID = "sylvan-fusion-410508"  // Update with your GCP project ID
-        GCR_SERVICE_ACCOUNT_KEY = 'your-gcr-service-account-key-id' // Update with your GCR service account key credential ID
-        GCR_REPO_NAME = "emp-management-backend"  // Update with your GCR repository name
-        GCR_CREDENTIALS_ID = 'your-gcr-service-account-key-id'
-        GCR_IMAGE_NAME = 'gcr.io/sylvan-fusion-410508/emp-management-backend'
+        // GCR_REGISTRY = "gcr.io"  // Update with your GCR registry URL
+        // GCR_PROJECT_ID = "sylvan-fusion-410508"  // Update with your GCP project ID
+        // GCR_SERVICE_ACCOUNT_KEY = 'your-gcr-service-account-key-id' // Update with your GCR service account key credential ID
+        // GCR_REPO_NAME = "emp-management-backend"  // Update with your GCR repository name
+        // GCR_CREDENTIALS_ID = 'your-gcr-service-account-key-id'
+        // GCR_IMAGE_NAME = 'gcr.io/sylvan-fusion-410508/emp-management-backend'
     
     }
         
@@ -99,24 +99,24 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                script {
+        // stage('Build Docker Image') {
+        //     steps {
+        //         script {
                    
-                    docker.build("${GCR_IMAGE_NAME}:${BUILD_NUMBER}")
-                }
-            }
-        }
+        //             docker.build("${GCR_IMAGE_NAME}:${BUILD_NUMBER}")
+        //         }
+        //     }
+        // }
 
-        stage('Push to GCR') {
-            steps {
-                script {
-                    docker.withRegistry('https://gcr.io', GCR_CREDENTIALS_ID) {
-                        docker.image("${GCR_IMAGE_NAME}:${BUILD_NUMBER}").push()
-                    }
-                }
-            }
-        }
+        // stage('Push to GCR') {
+        //     steps {
+        //         script {
+        //             docker.withRegistry('https://gcr.io', GCR_CREDENTIALS_ID) {
+        //                 docker.image("${GCR_IMAGE_NAME}:${BUILD_NUMBER}").push()
+        //             }
+        //         }
+        //     }
+        // }
     }
 }
 
