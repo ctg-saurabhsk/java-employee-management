@@ -2,10 +2,10 @@ pipeline {
     agent any
 
     environment {
-        DB_URL = credentials('DB_URL')
-       SONAR_PROJECT_KEY = credentials('SONAR_PROJECTKEY')
-        SONAR_HOST_URL = credentials('SONAR_HOST_URL')
-        SONAR_TOKEN = credentials('SONARQUBE_LOGIN')
+       // DB_URL = credentials('DB_URL')
+       //SONAR_PROJECT_KEY = credentials('SONAR_PROJECTKEY')
+       // SONAR_HOST_URL = credentials('SONAR_HOST_URL')
+       // SONAR_TOKEN = credentials('SONARQUBE_LOGIN')
         // GCR_REGISTRY = "gcr.io"  // Update with your GCR registry URL
         // GCR_PROJECT_ID =   // Update with your GCP project ID
         // GCR_SERVICE_ACCOUNT_KEY = 'your-gcr-service-account-key-id' // Update with your GCR service account key credential ID
