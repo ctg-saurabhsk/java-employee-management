@@ -1,8 +1,8 @@
 pipeline {
     agent any
 
-   // environment {
-       // DB_URL = credentials('DB_URL')
+   environment {
+        DB_URL = credentials('DB_URL')
        //SONAR_PROJECT_KEY = credentials('SONAR_PROJECTKEY')
        // SONAR_HOST_URL = credentials('SONAR_HOST_URL')
        // SONAR_TOKEN = credentials('SONARQUBE_LOGIN')
@@ -13,7 +13,7 @@ pipeline {
         // GCR_CREDENTIALS_ID = 
         // GCR_IMAGE_NAME = 
     
-    //}
+    }
         
     tools {
         maven "MAVEN_HOME"
