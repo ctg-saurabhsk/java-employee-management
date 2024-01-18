@@ -68,13 +68,13 @@ pipeline {
             }
         }
 
-        stage('Build and SonarQube Scan') {
-            steps {
-                script {
-                    sh "${MAVEN_HOME}/bin/mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}"
-                }
-           }
-         }
+        // stage('Build and SonarQube Scan') {
+        //     steps {
+        //         script {
+        //             sh "${MAVEN_HOME}/bin/mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}"
+        //         }
+        //    }
+        //  }
 
         stage('Build project and package jar') {
             steps {
@@ -102,24 +102,7 @@ pipeline {
             }
         }
 
-        // stage('Build Docker Image') {
-        //     steps {
-        //         script {
-                   
-        //             docker.build("${GCR_IMAGE_NAME}:${BUILD_NUMBER}")
-        //         }
-        //     }
-        // }
-
-        // stage('Push to GCR') {
-        //     steps {
-        //         script {
-        //             docker.withRegistry('https://gcr.io', GCR_CREDENTIALS_ID) {
-        //                 docker.image("${GCR_IMAGE_NAME}:${BUILD_NUMBER}").push()
-        //             }
-        //         }
-        //     }
-        // }
+       
     }
 }
 
