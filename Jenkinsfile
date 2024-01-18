@@ -3,6 +3,7 @@ pipeline {
 
    environment {
         DB_URL = credentials('DB_URL')
+       //db url is secret
        //SONAR_PROJECT_KEY = credentials('SONAR_PROJECTKEY')
        // SONAR_HOST_URL = credentials('SONAR_HOST_URL')
        // SONAR_TOKEN = credentials('SONARQUBE_LOGIN')
