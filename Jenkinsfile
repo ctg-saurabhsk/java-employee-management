@@ -3,9 +3,9 @@ pipeline {
 
    environment {
         DB_URL = credentials('DB_URL')
-       //SONAR_PROJECT_KEY = credentials('SONAR_PROJECTKEY')
-       // SONAR_HOST_URL = credentials('SONAR_HOST_URL')
-       // SONAR_TOKEN = credentials('SONARQUBE_LOGIN')
+       SONAR_PROJECT_KEY = credentials('SONAR_PROJECTKEY')
+       SONAR_HOST_URL = credentials('SONAR_HOST_URL')
+       SONAR_TOKEN = credentials('SONARQUBE_LOGIN')
         // GCR_REGISTRY = "gcr.io"  // Update with your GCR registry URL
         // GCR_PROJECT_ID =   // Update with your GCP project ID
         // GCR_SERVICE_ACCOUNT_KEY = 'your-gcr-service-account-key-id' // Update with your GCR service account key credential ID
@@ -68,13 +68,13 @@ pipeline {
             }
         }
 
-        // stage('Build and SonarQube Scan') {
-        //     steps {
-        //         script {
-        //             sh "${MAVEN_HOME}/bin/mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}"
-        //         }
-        //    }
-        //  }
+        stage('Build and SonarQube Scan') {
+            steps {
+                script {
+                    sh "${MAVEN_HOME}/bin/mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${SONAR_PROJECT_KEY} -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_TOKEN}"
+                }
+           }
+         }
 
         stage('Build project and package jar') {
             steps {
