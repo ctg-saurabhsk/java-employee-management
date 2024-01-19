@@ -3,6 +3,7 @@ pipeline {
 
    environment {
         DB_URL = credentials('DB_URL')
+       //db url is secret
        //SONAR_PROJECT_KEY = credentials('SONAR_PROJECTKEY')
        // SONAR_HOST_URL = credentials('SONAR_HOST_URL')
        // SONAR_TOKEN = credentials('SONARQUBE_LOGIN')
@@ -101,6 +102,25 @@ pipeline {
                 }
             }
         }
+        stage('Record Coverage') {
+            when { branch 'master' }
+            steps {
+                script {
+                    currentBuild.result = 'SUCCESS'
+                 }
+                step([$class: 'MasterCoverageAction', scmVars: [GIT_URL: env.GIT_URL]])
+            }
+        }
+        stage('PR Coverage to Github') {
+            when { allOf {not { branch 'master' }; expression { return env.CHANGE_ID != null }} }
+            steps {
+                script {
+                    currentBuild.result = 'SUCCESS'
+                 }
+                step([$class: 'CompareCoverageAction', publishResultAs: 'statusCheck', scmVars: [GIT_URL: env.GIT_URL]])
+            }
+        }
+    
 
        
     }
